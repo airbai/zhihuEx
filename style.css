@@ -1,0 +1,104 @@
+*
+{
+	margin: 0px;
+	padding: 0px;
+}
+a
+{
+	text-decoration: none;
+}
+body 
+{
+	font-family: "Helvetica Neue",Helvetica,Arial,default;
+	font-size: 80%;
+	
+	width:357px;
+}
+#header
+{
+	background: url("http://static.zhihu.com/static/img/header_v3.png") repeat-x scroll 0 0 transparent;
+	
+	min-height: 57px;
+	
+	padding-top: 9px;
+	padding-left: 5px;
+}
+#logo
+{
+	background: url(http://static.zhihu.com/static/img/logo.png) no-repeat center top;
+	
+	display: block;
+	float: left;
+	
+	height: 35px;
+	width: 75px;
+	
+	text-align: center;
+	text-indent: -10000px;
+	font-size: 10px;
+}
+.search_form 
+{
+	float: left;
+	
+	height: 30px;
+	
+	padding-left: 4px;
+	padding-top: 4px;
+}	
+#question_box
+{
+	height: 26px;
+	width: 200px;
+	
+	margin-right: 4px;
+}
+#search_button
+{
+	background: transparent url("http://static.zhihu.com/static/img/search-btns.png") no-repeat scroll 0 0;
+	border: 0px;
+	
+	color: #ffffff;
+	font-weight: bold;
+	min-height:34px;
+	width:60px;
+	float: right;
+	cursor:pointer;
+}
+#search_button:hover
+{
+	text-decoration: underline;
+}
+.notification
+{
+	border-top: 1px solid #C2D7EA;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+#notifications, #mail
+{
+	/*background-color: #DFEAF4;*/
+	border: 5px solid #F4F4F4;
+	
+	margin: 6px;
+	padding: 9px;
+}
+#notifications h3
+{
+	padding-bottom: 3px;
+	margin-bottom: 3px;
+}
+.expand
+{
+	color: #333333;
+}
+.hidden
+{
+	display: none;
+}
+ul li
+{
+	border-bottom: 1px solid #E7E7E7;
+	list-style: none;
+	margin-bottom: 8px;
+}

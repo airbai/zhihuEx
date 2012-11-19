@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="style.css?" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="jquery-1.6.2.min.js"></script>
+    <script type="text/javascript">
+        update_notifications();
+        //getHomeFeed();
+
+        function search() {
+            var q = document.getElementById("question_box").value;
+            if ($.trim(q) == '') { return; }
+            chrome.tabs.create({ url: "http://www.zhihu.com/search?q=" + q });
+        }
+
+        $(function () {
+            update_notifications();
+
+            $('#question_box').focus().keypress(function(event){
+                if ( event.which == 13 ) {
+                    search();
+                }
+            });
+		
+	    $('#search_button').click(function(){
+	    	search();});
+        });
+
+        function update_notifications() {
+            get_notifications();
+        }
+
+        function getHomeFeed() {
+            var url = "http://comet.zhihu.com/update?loc=http%3A%2F%2Fwww.zhihu.com%2F&amp;channel=132280164b42bf81b03&amp;callback=zhp132280967aabd1e3606";
+            $.getScript(url, function (data) {
+            });
+        }
+
+        function get_notifications() {
+            $.ajax({
+                url: "http://www.zhihu.com/_notification/new",
+                type: "get",
+                async: false,
+                dataType: "json",
+                success: function (data) {
+                    if (data) {
+                        var notification = data[1];
+                        var count = notification[0];
+                        $.each(notification[1], function () {
+                            $('#noticeList').append(['<li style="border-bottom: 1px solid #E7E7E7;list-style: none;padding-bottom: 4px;padding-top: 4px;">', this[0], '</li>'].join(''));
+                        });
+                        if (count > 0) {
+                            $('#noticeList').find('a').each(function () {
+                                var href = $(this).attr('href');
+                                if (href) {
+                                    if (href.indexOf('/') > -1) {
+                                        $(this).attr('href', 'http://www.zhihu.com' + href).attr('target', '_blank');
+                                    }
+                                    else {
+                                        $(this).attr('href', 'http://www.zhihu.com').attr('target', '_blank');
+                                    }
+                                }
+
+                                if ($(this).text() == '展开') {
+                                    $(this).remove();
+                                }
+                            });
+                            chrome.browserAction.setBadgeText({ text: String(count) });
+                        }
+                    }
+                }
+            });
+        }
+
+        function zhp132280967aabd1e3606(data) {
+            var notificationCount = 0;
+            $.each(data, function () {
+                var item = this;
+                var type = item[0];
+                var content = item[1];
+                var actor = ['<a href="/people/', content[1][1], 'class="xoq"><img class="xmq" src="', content[1][2], '" title="', content[1][0], '"></a>'].join('');
+                if (type === 'homefeed') {
+                    $(actor).insertBefore($(content[6]).find('.xzq'));
+                    $('#notificationsList').append(['<li style="border-bottom: 1px solid #E7E7E7;list-style: none;padding-bottom: 4px;padding-top: 4px;">', content[6], '</li>'].join(''));
+                }
+            });
+
+            $('#notificationsList').find('a').attr('href', 'http://www.zhihu.com' + $(this).attr('href'));
+        }
+    </script>
+</head>
+<body>
+    <div id="header">
+        <a id="logo" href="http://www.zhihu.com/" target="_blank">知乎</a>
+        <form class="search_form" action="#" name="search_form">
+        <input id="search_button" type="button" value="搜索" />
+        <input id="question_box" type="text" value="" maxlength="150" name="q" />
+        <input type="hidden" name="context_type" />
+        <input type="hidden" name="context_id" />
+        <input type="hidden" name="source" value="chrome-extension" />
+        </form>
+    </div>
+    <div id="mail">
+        <h3 id="noticeTitle">
+            新通知</h3>
+        <ul id="noticeList">
+        </ul>
+    </div>
+    <div id="notifications" style="display: none">
+        <h3 id="notificationsTitle">
+            最新动态</h3>
+        <ul id="notificationsList">
+        </ul>
+    </div>
+</body>
+</html>

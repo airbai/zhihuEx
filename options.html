@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>选项设置</title>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+    <script type="text/javascript" src="jquery-1.6.2.min.js"></script>
+    <script type="text/javascript" src="json2.js"></script>
+    <script type="text/javascript" src="util.js"></script>
+    <script type="text/javascript">
+	var defaultOptions = "{\"notiInterval\":\"1\"}";
+
+        function restore_options() {
+	var options = JSON.parse(getLocalStorageVal('options', defaultOptions));
+            
+            $("#txtNotiInterval").val(options.notiInterval);
+        }
+        
+        function save_options() {
+            var opt = {
+                notiInterval: parseInt($("#txtNotiInterval").val(), 10)
+            };
+
+            localStorage['options'] = JSON.stringify(opt);
+            
+            showSaved();
+        }
+        
+        function resetOptions(){
+            $('#txtNotiInterval').val(1);
+            
+            showSaved();
+        }
+        
+        function showSaved() {
+            $("#status").html("保存成功");
+            setTimeout(function () {
+                $("#status").html("");
+            }, 750);
+        }
+
+	$(function(){
+		restore_options();
+
+		$('#save').click(function(){
+			save_options();
+		}).attr('disabled', true);
+
+		$('#txtNotiInterval').keyup(function(){
+			var interval = parseInt($(this).val(), 10);
+			$('#save').attr('disabled', isNaN(interval)||interval<1);
+			
+		}).focus();
+	});
+    </script>
+
+    </head>
+<body class="options">
+    <div id="optionsView" class="vignette">
+        <div class="vignetteContent">
+            <form name="optionsForm" class="optionsForm" action="#">
+            <div id="optionsContainer">
+                <h1>
+                    设置</h1><hr></hr>
+                <table class="simpleOptions">
+                   <tr>
+                        <td>
+                            获取“新通知”个数时间间隔：<br/>（默认1分钟）
+                            </td>
+                        <td>
+                            <input id="txtNotiInterval" type="text" />分钟
+                              </td>
+                    </tr>
+                </table>
+            </div>
+		<div>
+            <input id="save" value="保存设置" type="button" />
+            <span id="status" style="color:Red"></span>
+		</div>
+            </form>
+        </div>
+    </div>
+    <div class="copyright">
+    <a href="http://t.sina.com.cn/airbai" target="_blank">联系作者</a>
+    </div>
+</body>
+</html>

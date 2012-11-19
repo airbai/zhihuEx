@@ -1,0 +1,20 @@
+{
+   "background_page": "background.html",
+   "browser_action": {
+      "default_icon": "16.png",
+      "popup": "popup.html"
+   },
+   "description": "\u77E5\u4E4E\u65B0\u901A\u77E5\uFF01",
+   "icons": {
+      "128": "128.png",
+      "16": "16.png",
+      "32": "32.png",
+      "48": "48.png"
+   },
+   "name": "\u77E5\u4E4E",
+   "options_page": "options.html",
+   "permissions": [ "tabs", "http://www.zhihu.com/" ],
+   "update_url": "http://clients2.google.com/service/update2/crx",
+   "version": "2011.9.10.2",
+   "manifest_version": 2
+}

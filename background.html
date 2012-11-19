@@ -1,0 +1,41 @@
+<html>
+<head>
+<script type="text/javascript" src="jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="json2.js"></script>
+<script type="text/javascript" src="util.js"></script>
+<script type="text/javascript">
+	var defaultOptions = "{\"notiInterval\":\"1\"}"; 
+	// Start
+	update();
+	
+	// Functions
+	function update() {
+	    var t = new Date().getTime();
+	    $.ajax({
+	        url: "http://www.zhihu.com/_notification/new" + "?" + t,
+	        type: "get",
+	        async: false,
+	        dataType: "json",
+	        success: function (data) {
+	            if (data) {
+	                var notification = data[1];
+	                var count = notification[0];
+	                if (count > 0) {
+	                    chrome.browserAction.setBadgeText({ text: String(count) });
+	                }
+			else
+			{
+				chrome.browserAction.setBadgeText({ text: String() });
+			}
+
+	            }
+	        }
+	    });
+	
+	    var options = JSON.parse(getLocalStorageVal('options', defaultOptions));
+	    var delayMins = options.notiInterval ? options.notiInterval : 1;
+	    setTimeout(update, delayMins * 60 * 1000);
+	}
+</script>
+</head>
+</html>
